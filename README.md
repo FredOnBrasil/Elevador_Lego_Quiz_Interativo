@@ -9,30 +9,6 @@ Este sistema integra **lógica de programação**, **eletrônica aplicada** e **
 
 ---
 
-## 📸 Imagens do Projeto
-As imagens do projeto estão na pasta `Imagens/`:
-
-
-### 📸 Vista frontal
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/Frontal.jpg)  
-
-### 📸 Vista Lateral
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/front3.jpeg)  
-
-### 📸 Vista Lateral
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/lateral.jpg)  
-
-### 📸 Interface
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/Interface.png)  
-
-### 📸 Mensagem de erro
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/msg_erro.png)  
-
-### 📸 Mensagem final
-![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/msg_final.png)  
-
----
-
 ## 🏗️ Estrutura Geral do Projeto
 
 ```mermaid
@@ -72,6 +48,75 @@ flowchart LR
     D2 --> D3
 
 ```
+
+### 🔹 Arduino – Controle Físico
+```mermaid
+flowchart TD
+    A([Início]) --> B[Configura pinos, Servo e Serial]
+    B --> C{Recebe comando pela Serial?}
+    C -- Não --> C
+    C -- Sim --> D{Comando}
+    D -- CORRETO --> E[Aciona LED verde / Move servo p/ cima]
+    D -- ERRADO --> F[Aciona LED amarelo / Move servo p/ baixo]
+    D -- RESET --> G[Reposiciona elevador no andar inicial]
+    E --> C
+    F --> C
+    G --> C
+```
+
+### 🔹 Aplicação WPF – Quiz Interativo
+```mermaid
+flowchart TD
+    A([Início do App]) --> B[Carregar perguntas do Quiz]
+    B --> C[Exibir pergunta e alternativas na tela]
+    C --> D[Usuário seleciona resposta]
+    D --> E{Resposta correta?}
+    E -- Sim --> F[Envia CORRETO ao Arduino e incrementa Score]
+    E -- Não --> G[Envia ERRADO ao Arduino e mantém/reduz Score]
+    F --> H[Atualiza interface gráfica: pontuação e elevador]
+    G --> H
+    H --> I{Próxima ação}
+    I -- Continuar --> C
+    I -- RESET acionado --> J[Envia RESET ao Arduino e reinicia Score]
+    J --> B
+```
+### 🔹 Integração Quiz ↔ Arduino
+```mermaid
+sequenceDiagram
+    participant User as Usuário
+    participant WPF as App Quiz (WPF)
+    participant Arduino as Arduino + Servo + LEDs
+
+    User->>WPF: Seleciona alternativa
+    WPF->>Arduino: Envia comando (CORRETO/ERRADO/RESET)
+    Arduino->>Arduino: Processa comando
+    Arduino->>WPF: Retorna status (posição / andar)
+    WPF->>User: Atualiza interface e anima cabine
+```
+
+## 📸 Imagens do Projeto
+As imagens do projeto estão na pasta `Imagens/`:
+
+
+### 📸 Vista frontal
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/Frontal.jpg)  
+
+### 📸 Vista Lateral
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/front3.jpeg)  
+
+### 📸 Vista Lateral
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/lateral.jpg)  
+
+### 📸 Interface
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/Interface.png)  
+
+### 📸 Mensagem de erro
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/msg_erro.png)  
+
+### 📸 Mensagem final
+![Imagem 2](https://github.com/FredOnBrasil/Elevador_Lego_Quiz_Interativo/blob/main/Imagens/msg_final.png)  
+
+---
 
 ## 🚀 Conclusão
 
